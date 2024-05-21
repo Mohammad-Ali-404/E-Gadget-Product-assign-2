@@ -19,9 +19,16 @@ const createProductIntoDB = (productData) => __awaiter(void 0, void 0, void 0, f
     if (existingProduct) {
         throw new Error(`Product already exists`);
     }
-    const Result = yield product_model_1.default.create(productData);
-    return Result;
+    const result = yield product_model_1.default.create(productData);
+    return result;
+});
+// get all products DB
+const getAllProductsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield product_model_1.default.find();
+    console.log(result);
+    return result;
 });
 exports.ProductService = {
     createProductIntoDB,
+    getAllProductsFromDB,
 };

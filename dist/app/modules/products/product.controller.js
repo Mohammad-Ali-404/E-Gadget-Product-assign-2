@@ -31,6 +31,25 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
     }
 });
+// Get all products from DB
+const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield product_service_1.ProductService.getAllProductsFromDB();
+        res.status(200).json({
+            success: true,
+            message: "Products fetched succesfully!",
+            data: result,
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message || "something went wrong",
+            error: error,
+        });
+    }
+});
 exports.ProductController = {
     createProduct,
+    getAllProducts,
 };

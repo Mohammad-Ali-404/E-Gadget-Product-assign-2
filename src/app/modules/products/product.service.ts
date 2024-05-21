@@ -6,9 +6,17 @@ const createProductIntoDB = async (productData: Product) => {
   if (existingProduct) {
     throw new Error(`Product already exists`);
   }
-  const Result = await Products.create(productData);
-  return Result;
+  const result = await Products.create(productData);
+  return result;
 };
+
+// get all products DB
+const getAllProductsFromDB = async () => {
+  const result = await Products.find();
+  return result;
+};
+
 export const ProductService = {
   createProductIntoDB,
+  getAllProductsFromDB,
 };
