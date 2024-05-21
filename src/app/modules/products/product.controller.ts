@@ -1,25 +1,26 @@
 import { Request, Response } from "express";
-import { ProductServices } from "./product.service";
+import { productValidationSchema } from "./product.validation";
+import { ProductService } from "./product.service";
 
 const createProduct = async (req: Request, res: Response) => {
   try {
     const { product: ProductData } = req.body;
-
-    //will call service function to send this data
-    const result = await ProductServices.createProductIntoDB(ProductData);
-
-    //send response
-
+    const zodParsedData = productValidationSchema.parse(ProductData);
+    const result = await ProductService.createProductIntoDB(zodParsedData);
     res.status(200).json({
       success: true,
-      message: "Product created successfully",
+      message: "Product created succesfully!",
       data: result,
     });
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || "something went wrong",
+      error: error,
+    });
   }
 };
 
-export const ProductControllers = {
+export const ProductController = {
   createProduct,
 };

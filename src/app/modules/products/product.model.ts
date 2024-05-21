@@ -1,51 +1,69 @@
-import mongoose, { Schema } from "mongoose";
-import { Inventory, Product, Variant } from "./product.interface";
+//create a schema for students
+
+import { model, Schema } from "mongoose";
+import Product, { Inventory, Variant, ProductModel } from "./product.interface";
+
+// Variants schema
 
 const variantSchema = new Schema<Variant>({
-  type: { type: String, required: [true, "Variant type is required"] },
-  value: { type: String, required: [true, "Variant value is required"] },
+  type: {
+    type: String,
+    required: true,
+  },
+  value: {
+    type: String,
+    required: true,
+  },
 });
+
+// Inventory schema
 
 const inventorySchema = new Schema<Inventory>({
   quantity: {
     type: Number,
-    required: [true, "Inventory quantity is required"],
+    required: true,
   },
   inStock: {
     type: Boolean,
-    required: [true, "Inventory stock status is required"],
+    required: true,
   },
 });
 
-const productSchema = new Schema<Product>({
+const productSchema = new Schema<Product, ProductModel>({
   name: {
     type: String,
-    required: [true, "Product name is required"],
+    required: true,
   },
   description: {
     type: String,
-    required: [true, "Product description is required"],
+    required: true,
   },
   price: {
     type: Number,
-    required: [true, "Product price is required"],
+    required: true,
   },
   category: {
     type: String,
-    required: [true, "Product category is required"],
+    required: true,
   },
   tags: {
     type: [String],
-    required: [true, "Product tags are required"],
+    required: true,
   },
-  variants: {
-    type: [variantSchema],
-    required: [true, "Product variants are required"],
-  },
+  variants: [variantSchema],
   inventory: {
     type: inventorySchema,
-    required: [true, "Product inventory is required"],
+    required: true,
   },
 });
 
-export const ProductModel = mongoose.model<Product>("Product", productSchema);
+// creating custom static method
+
+productSchema.statics.isUserExists = async function (name: string) {
+  const existingProduct = await Products.findOne({ name });
+  return existingProduct;
+};
+
+const Products = model<Product, ProductModel>("Product", productSchema);
+
+export default Products;

@@ -1,3 +1,7 @@
+//create type or interface
+
+import { Model } from "mongoose";
+
 export type Variant = {
   type: string;
   value: string;
@@ -8,7 +12,7 @@ export type Inventory = {
   inStock: boolean;
 };
 
-export type Product = {
+type Product = {
   name: string;
   description: string;
   price: number;
@@ -17,3 +21,10 @@ export type Product = {
   variants: Variant[];
   inventory: Inventory;
 };
+
+// for creating static
+export interface ProductModel extends Model<Product> {
+  isProductExists(id: string): Promise<Product>;
+}
+
+export default Product;

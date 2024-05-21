@@ -1,10 +1,13 @@
 import express from "express";
-import { ProductControllers } from "./product.controller";
-
-//will call controller function
+import { ProductController } from "./product.controller";
+// Product Route
 
 const router = express.Router();
 
-router.post("/create-product", ProductControllers.createProduct);
+// create single product route
 
-export const ProductsRoute = router;
+router.post("/create-product", ProductController.createProduct);
+
+// get all products route
+
+export const ProductRoutes = router;

@@ -1,12 +1,14 @@
-import { Product } from "./product.interface";
-import { ProductModel } from "./product.model";
+import Product from "./product.interface";
+import Products from "./product.model";
 
-const createProductIntoDB = async (product: Product) => {
-  const result = await ProductModel.create(product);
-  return result;
+const createProductIntoDB = async (productData: Product) => {
+  const existingProduct = await Products.findOne({ name: productData.name });
+  if (existingProduct) {
+    throw new Error(`Product already exists`);
+  }
+  const Result = await Products.create(productData);
+  return Result;
 };
-
-export const ProductServices = {
+export const ProductService = {
   createProductIntoDB,
 };
-//এটি যাবে এখন কন্ট্রোলারে
