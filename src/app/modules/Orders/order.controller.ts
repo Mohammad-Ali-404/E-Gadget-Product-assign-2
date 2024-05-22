@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { orderServices } from "./order.service";
 import ordersValidationSchema from "./order.validation";
+import { IAnyObject } from "../products/product.interface";
 
 const createOrders = async (req: Request, res: Response) => {
   const { body } = req;
@@ -24,22 +25,35 @@ const createOrders = async (req: Request, res: Response) => {
   return result;
 };
 
-// const getAllOrders = async (req: Request, res: Response) => {
-//   try {
-//     const result = await OrderServices.getAllOrderFromDB();
-//     res.status(200).json({
-//       success: true,
-//       message: "Orders fetched successfully!",
-//       data: result,
-//     });
-//   } catch (error: any) {
-//     res.status(500).json({
-//       success: false,
-//       message: error.message || "something went wrong",
-//       error: error,
-//     });
-//   }
-// };
+const getAllOrders = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.query;
+
+    const find: IAnyObject = {};
+    if (email) {
+      find.email = email;
+    }
+
+    const result = await orderServices.getAllOrderIntoDB(find);
+
+    const response: IAnyObject = {
+      success: result.length > 0,
+      message:
+        result.length > 0 ? "Orders fetched successfully!" : "Order Not found",
+    };
+
+    if (result.length > 0) {
+      response.data = result;
+    }
+    res.status(200).json(response);
+  } catch {
+    res.status(500).json({
+      success: false,
+      message: "Orders not found",
+    });
+  }
+};
 export const orderController = {
   createOrders,
+  getAllOrders,
 };

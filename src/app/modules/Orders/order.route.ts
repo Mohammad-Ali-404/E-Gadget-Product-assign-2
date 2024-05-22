@@ -10,6 +10,6 @@ router.post("/", orderController.createOrders);
 
 // get all order route
 
-// router.get("/", orderController.getAllOrders);
+router.get("/", orderController.getAllOrders);
 
 export const OrdersRoutes = router;
