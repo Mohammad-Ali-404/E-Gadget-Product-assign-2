@@ -109,10 +109,12 @@ const deleteProduct = async (req: Request, res: Response) => {
     });
   }
 };
+// const searchProduct = async (req: Request, res: Response) => {};
 export const ProductController = {
   createProduct,
   getAllProducts,
   getSingleProductFromDB,
   updateProduct,
   deleteProduct,
+  // searchProduct,
 };

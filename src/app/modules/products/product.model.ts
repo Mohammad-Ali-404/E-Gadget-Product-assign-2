@@ -8,11 +8,11 @@ import Product, { Inventory, Variant, ProductModel } from "./product.interface";
 const variantSchema = new Schema<Variant>({
   type: {
     type: String,
-    required: true,
+    required: [true, "Color is required"],
   },
   value: {
     type: String,
-    required: true,
+    required: [true, "Value is required"],
   },
 });
 
@@ -21,39 +21,39 @@ const variantSchema = new Schema<Variant>({
 const inventorySchema = new Schema<Inventory>({
   quantity: {
     type: Number,
-    required: true,
+    required: [true, "quantity is required"],
   },
   inStock: {
     type: Boolean,
-    required: true,
+    required: [true, "inStock is required"],
   },
 });
 
 const productSchema = new Schema<Product, ProductModel>({
   name: {
     type: String,
-    required: true,
+    required: [true, "name is required"],
   },
   description: {
     type: String,
-    required: true,
+    required: [true, "description is required"],
   },
   price: {
     type: Number,
-    required: true,
+    required: [true, "price is required"],
   },
   category: {
     type: String,
-    required: true,
+    required: [true, "category is required"],
   },
   tags: {
     type: [String],
-    required: true,
+    required: [true, "tags is required"],
   },
   variants: [variantSchema],
   inventory: {
     type: inventorySchema,
-    required: true,
+    required: [true, "inventory is required"],
   },
 });
 

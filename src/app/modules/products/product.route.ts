@@ -21,4 +21,7 @@ router.put("/:productId", ProductController.updateProduct);
 // Delete product route
 router.delete("/:productId", ProductController.deleteProduct);
 
+// Search product route
+// router.get("/api/products", ProductController.searchProduct);
+
 export const ProductRoutes = router;

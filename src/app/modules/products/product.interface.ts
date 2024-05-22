@@ -21,10 +21,13 @@ type Product = {
   variants: Variant[];
   inventory: Inventory;
 };
+//  query
+export interface IAnyObject {
+  [key: string]: any;
+}
 
 // for creating static
 export interface ProductModel extends Model<Product> {
   isProductExists(id: string): Promise<Product>;
 }
-
 export default Product;
