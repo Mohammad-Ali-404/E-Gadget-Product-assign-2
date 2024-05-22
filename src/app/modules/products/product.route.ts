@@ -10,6 +10,7 @@ router.post("/create-product", ProductController.createProduct);
 // Get all products route
 router.get("/", async (req: Request, res: Response) => {
   const { searchTerm } = req.query;
+
   if (searchTerm) {
     try {
       const regex = new RegExp(searchTerm as string, "i"); // Case-insensitive regex
