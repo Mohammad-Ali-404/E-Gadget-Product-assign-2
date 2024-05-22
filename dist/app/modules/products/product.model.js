@@ -15,50 +15,63 @@ const mongoose_1 = require("mongoose");
 const variantSchema = new mongoose_1.Schema({
     type: {
         type: String,
-        required: true,
+        required: [true, "Color is required"],
     },
     value: {
         type: String,
-        required: true,
+        required: [true, "Value is required"],
     },
 });
 // Inventory schema
 const inventorySchema = new mongoose_1.Schema({
     quantity: {
         type: Number,
-        required: true,
+        required: [true, "quantity is required"],
     },
     inStock: {
         type: Boolean,
-        required: true,
+        required: [true, "inStock is required"],
     },
 });
 const productSchema = new mongoose_1.Schema({
     name: {
         type: String,
-        required: true,
+        required: [true, "name is required"],
     },
     description: {
         type: String,
-        required: true,
+        required: [true, "description is required"],
     },
     price: {
         type: Number,
-        required: true,
+        required: [true, "price is required"],
     },
     category: {
         type: String,
-        required: true,
+        required: [true, "category is required"],
     },
     tags: {
         type: [String],
-        required: true,
+        required: [true, "tags is required"],
     },
     variants: [variantSchema],
     inventory: {
         type: inventorySchema,
-        required: true,
+        required: [true, "inventory is required"],
     },
+});
+//  Middleware Query
+productSchema.pre("find", function (next) {
+    this.find({ isDeleted: { $ne: true } });
+    next();
+});
+productSchema.pre("findOne", function (next) {
+    this.find({ isDeleted: { $ne: true } });
+    next();
+});
+productSchema.pre("aggregate", function (next) {
+    this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+    next();
 });
 // creating custom static method
 productSchema.statics.isUserExists = function (name) {

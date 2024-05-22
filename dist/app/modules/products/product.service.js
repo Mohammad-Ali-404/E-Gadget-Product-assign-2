@@ -25,10 +25,31 @@ const createProductIntoDB = (productData) => __awaiter(void 0, void 0, void 0, f
 // get all products DB
 const getAllProductsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield product_model_1.default.find();
-    console.log(result);
     return result;
 });
+//get single product from DB
+const getSingleProductFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield product_model_1.default.find({ _id: id });
+    console.log(result, "single product data");
+    return result;
+});
+const updateProductIntoDB = (id, updateData) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = product_model_1.default.findByIdAndUpdate(id, updateData, {
+        new: true,
+        runValidators: true,
+    });
+    return result;
+});
+const deleteProductFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield product_model_1.default.findByIdAndDelete(id);
+    return result;
+});
+const searchProductFromDB = () => __awaiter(void 0, void 0, void 0, function* () { });
 exports.ProductService = {
     createProductIntoDB,
     getAllProductsFromDB,
+    getSingleProductFromDB,
+    updateProductIntoDB,
+    deleteProductFromDB,
+    searchProductFromDB,
 };

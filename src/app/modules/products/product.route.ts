@@ -1,27 +1,47 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { ProductController } from "./product.controller";
-// Product Route
+import Products from "./product.model";
 
 const router = express.Router();
 
-// create single product route
-
+// Create single product route
 router.post("/create-product", ProductController.createProduct);
 
-// get all products route
+// Get all products route
+router.get("/", async (req: Request, res: Response) => {
+  const { searchTerm } = req.query;
+  if (searchTerm) {
+    try {
+      const regex = new RegExp(searchTerm as string, "i"); // Case-insensitive regex
+      const products = await Products.find({
+        $or: [{ name: regex }],
+      });
 
-router.get("/", ProductController.getAllProducts);
+      return res.status(200).json({
+        success: true,
+        message: `Products matching search term '${searchTerm}' fetched successfully!`,
+        data: products,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while fetching products",
+        error,
+      });
+    }
+  } else {
+    // If no searchTerm is provided, return all products
+    return ProductController.getAllProducts(req, res);
+  }
+});
 
-// get single product route
+// Get single product route
 router.get("/:productId", ProductController.getSingleProductFromDB);
 
-// update single product route
+// Update single product route
 router.put("/:productId", ProductController.updateProduct);
 
 // Delete product route
 router.delete("/:productId", ProductController.deleteProduct);
-
-// Search product route
-// router.get("/api/products", ProductController.searchProduct);
 
 export const ProductRoutes = router;

@@ -56,7 +56,21 @@ const productSchema = new Schema<Product, ProductModel>({
     required: [true, "inventory is required"],
   },
 });
+//  Middleware Query
+productSchema.pre("find", function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
 
+productSchema.pre("findOne", function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+productSchema.pre("aggregate", function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+  next();
+});
 // creating custom static method
 
 productSchema.statics.isUserExists = async function (name: string) {
