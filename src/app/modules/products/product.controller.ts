@@ -4,8 +4,8 @@ import { ProductService } from "./product.service";
 
 const createProduct = async (req: Request, res: Response) => {
   try {
-    const { product: ProductData } = req.body;
-    const zodParsedData = productValidationSchema.parse(ProductData);
+    const product = req.body;
+    const zodParsedData = productValidationSchema.parse(product);
     const result = await ProductService.createProductIntoDB(zodParsedData);
     res.status(200).json({
       success: true,
