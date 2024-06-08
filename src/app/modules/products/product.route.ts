@@ -5,7 +5,7 @@ import Products from "./product.model";
 const router = express.Router();
 
 // Create single product route
-router.post("/create-product", ProductController.createProduct);
+router.post("/", ProductController.createProduct);
 
 // Get all products route
 router.get("/", async (req: Request, res: Response) => {
